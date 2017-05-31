@@ -1,0 +1,153 @@
+/* General Styles */
+body {
+  font-family: verdana;
+  margin: 0;
+  /* Force the scroll bar so that the page's width won't change */
+  overflow-y: scroll;
+}
+.external-link {
+  height: 15px;
+}
+button {
+  cursor: pointer;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: background-color .1s;
+}
+button:hover {
+  background-color: #a5a5a4;
+}
+input.search {
+  width: 400px;
+  padding: 10px;
+  font-size: 1.2em;
+}
+button.load-more {
+  padding: 10px 50px;
+}
+.loading {
+  text-align: center;
+  font-size: 2em;
+}
+.center {
+  text-align: center;
+}
+.right {
+  text-align: right;
+}
+
+
+/* Top-level sectioning elements */
+header.top {
+  text-align: center;
+}
+header.top .search {
+  margin-top: 20px;
+}
+header.top .info .details {
+  font-size: 0.7em;
+}
+main.top {
+  max-width: 900px;
+  margin:  30px auto 0;
+}
+footer.top {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Info (in the header) */
+header.top .info {
+  display: flex;
+  justify-content: center;
+}
+header.top .info > span:not(last-child) {
+  margin-right: 20px;
+}
+
+/* Post-specific elements */
+.post {
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px -9px black;
+  background-color: lightgray;
+}
+.post.collapsed {
+  padding: 10px;
+  background-color: #f3f3f3;
+  box-shadow: 0 4px 13px -11px black;
+}
+.post.collapsed.openable {
+  cursor: pointer;
+  background-color: lightgray;
+}
+.post.collapsed header {
+  max-height: 0;
+  overflow: hidden;
+}
+.post.collapsed main {
+  max-height: 0;
+  overflow: hidden;
+}
+.post.collapsed footer {
+  font-style: italic;
+  color: gray;
+  font-size: 0.8em;
+}
+.post.collapsed:hover footer .show {
+  text-decoration: underline;
+}
+.post-group {
+  padding: 10px;
+  margin-bottom: 20px;
+  font-style: italic;
+  text-align: center;
+}
+.post header .info {
+  display: flex;
+}
+.post header .info > span {
+  width: 100%;
+}
+.post header .view-options {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.post header .view-options button {
+  border-radius: 0;
+  padding: 6px 10px;
+}
+.post header .view-options button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+.post header .view-options button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+.post header .view-options button.selected {
+  background-color: #404040;
+  cursor: default;
+}
+.post header .view-options button.disabled {
+  background-color: lightgray;
+  cursor: not-allowed;
+  color: black;
+}
+.post main {
+  padding: 0 50px;
+  font-size: 1.5em;
+  text-align: center;
+}
+.post footer {
+  display: flex;
+  justify-content: center;
+}
+.post footer button.hide {
+  width: 150px;
+  height: 30px;
+}
