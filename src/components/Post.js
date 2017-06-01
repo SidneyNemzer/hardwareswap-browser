@@ -74,7 +74,7 @@ class Post extends Component {
     // Build location string
     let location = ''
     if (this.parsedTitle) {
-      if (this.country) {
+      if (this.usaState) {
         location += this.usaState + ', '
       }
       location += this.country
