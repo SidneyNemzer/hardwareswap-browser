@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Header from './components/Header'
 import Post from './components/Post'
 import CollapsedPosts from './components/CollapsedPosts'
-
-import './App.css'
+import muiThemeable from 'material-ui/styles/muiThemeable'
+import { Tabs, Tab } from 'material-ui/Tabs'
 
 class App extends Component {
   constructor() {
@@ -11,6 +11,7 @@ class App extends Component {
     this.state = {
       posts: [],
       hidden: {},
+      savedPosts: {},
       loading: true,
       error: null,
       filter: null
@@ -75,7 +76,7 @@ class App extends Component {
       )
     }
     
-    const { posts, hidden, filter } = this.state
+    const { posts, hidden, filter, savedPosts } = this.state
     
     // Simple matching function, for filtering
     function matchesSearch(text, search) {
@@ -144,23 +145,41 @@ class App extends Component {
       }
     })
     
+    const pageStyle = {
+      backgroundColor: this.props.muiTheme.palette.canvasColor
+    }
+
     return (
       <div>
         <Header
           loadedPosts={posts.length}
-          hiddenPosts={{
-            filtered: filteredOut,
-            manual: Object.keys(hidden).length
-          }}
-          handleHiddenReset={this.handleHiddenReset}
-          handleSearch={this.handleSearch}
+          hiddenPosts={Object.keys(hidden).length}
+          filteredPosts={filteredOut}
+          savedPosts={Object.keys(savedPosts).length}
         />
-        <main className='top'>
-          {groupedElements}
-        </main>
+        <Tabs
+          tabItemContainerStyle={{
+            width: 700
+          }}
+          style={{
+            backgroundColor: this.props.muiTheme.palette.primary1Color
+          }}
+        >
+          <Tab label="All">
+            <main style={pageStyle}>
+              {groupedElements}
+            </main>
+          </Tab>
+          <Tab label="Saved">
+            You haven't saved any posts yet!
+          </Tab>
+          <Tab label="Hidden">
+            You haven't hidden any posts yet!
+          </Tab>
+        </Tabs>
       </div>
     )
   }
 }
 
-export default App
+export default muiThemeable()(App)

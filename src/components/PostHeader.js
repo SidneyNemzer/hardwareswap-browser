@@ -60,7 +60,7 @@ export default function PostHeader(props) {
             >
               Open in reddit 
               <img 
-                className="external-link"
+                style={{width: 20}}
                 src="https://maxcdn.icons8.com/Share/icon/Very_Basic//external_link1600.png"
                 alt="external link"
               />
@@ -100,7 +100,7 @@ export default function PostHeader(props) {
           >
             Open in reddit 
             <img 
-              className="external-link"
+              style={{width: 20}}
               src="https://maxcdn.icons8.com/Share/icon/Very_Basic//external_link1600.png"
               alt="external link"
             />

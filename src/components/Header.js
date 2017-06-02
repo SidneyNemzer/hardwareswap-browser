@@ -1,84 +1,82 @@
 import React, { Component } from 'react'
+import muiThemeable from 'material-ui/styles/muiThemeable'
+import Statistic from './Statistic'
 
 class Header extends Component {
   render() {
+    const { muiTheme } = this.props
+    
+    const headerStyle = {
+      backgroundColor: muiTheme.palette.primary1Color,
+      color: muiTheme.palette.alternateTextColor,
+      padding: 20
+    }
+    
+    const headingStyle = {
+      textAlign: 'center'
+    }
+    
+    const infoBarStyle = {
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center'
+    }
+    
     if (this.props.loading) {
       return (
-        <header className='top'>
-          <h1>
+        <header style={headerStyle}>
+          <h1 style={headingStyle}>
             <a 
               href="https://reddit.com/r/hardwareswap" 
               target="_blank" 
               title="Open /r/hardwareswap in a new tab"
               rel="noopener noreferrer"
             >
-              /r/hardwareswap&nbsp;
+              /r/hardwareswap
             </a>
-            Browser
+            &nbsp;Browser
           </h1>
-          <div className="info">
+          <div style={infoBarStyle}>
             Loading...
           </div>
-          <input
-            className="search"
-            placeholder="search..."
-            disabled
-          />
         </header>
       )  
     }
     
     return (
-      <header className='top'>
-        <h1>
+      <header style={headerStyle}>
+        <h1 style={headingStyle}>
           <a 
             href="https://reddit.com/r/hardwareswap" 
             target="_blank" 
             title="Open /r/hardwareswap in a new tab"
             rel="noopener noreferrer"
           >
-            /r/hardwareswap&nbsp;
+            /r/hardwareswap
           </a> 
-          Browser
+          &nbsp;Browser
         </h1>
-        <div className="info">
-          <span className="loaded-posts">
-            Loaded Posts: {this.props.loadedPosts}
-          </span>
-          <span className="hidden-posts">
-            Hidden Posts:&nbsp;
-            <span className="data">
-              {this.props.hiddenPosts.manual + this.props.hiddenPosts.filtered}
-            </span>
-            &nbsp;
-            <span className="details">
-              (
-              <span 
-                className="data"
-                style={{
-                  cursor: 'pointer'
-                }}
-                title="Click to reset hidden posts"
-                onClick={this.props.handleHiddenReset}
-              >
-                {this.props.hiddenPosts.manual} manual
-              </span>
-              ,&nbsp;
-              <span className="data">
-                {this.props.hiddenPosts.filtered} filtered
-              </span>
-              )
-            </span>
-          </span>
+        <div style={infoBarStyle}>
+          <Statistic
+            number={this.props.loadedPosts}
+            label="Loaded Posts"
+          />
+          <Statistic
+            number={this.props.hiddenPosts}
+            label="Hidden Posts"
+          />
+          <Statistic
+            number={this.props.savedPosts}
+            label="Saved Posts"
+          />
+          <Statistic
+            number={this.props.filteredPosts}
+            label="Filtered Posts"
+          />
         </div>
-        <input
-          className="search"
-          placeholder="search..."
-          onInput={this.props.handleSearch}
-        />
       </header>
     )
   }
 }
 
-export default Header
+export default muiThemeable()(Header)
