@@ -1,5 +1,5 @@
+/* This file only has styles for elements outside the React app */
 body {
   margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;
 }
