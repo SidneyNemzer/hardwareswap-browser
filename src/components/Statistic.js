@@ -13,7 +13,7 @@ const Statistic = (props) => {
   }
 
   const labelStyle = {
-    color: theme.palette.text.lightDivider
+    color: theme.palette.grey['400']
   }
 
   return (
