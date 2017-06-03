@@ -19,7 +19,7 @@ function fetchPosts() {
       const posts = data.data.children.map(post => {
         return {
           url: post.data.url,
-          title: post.data.title,
+          title: post.data.title.replace(/&amp;/g, '&'),
           id: post.data.id,
           author: post.data.author
         }
