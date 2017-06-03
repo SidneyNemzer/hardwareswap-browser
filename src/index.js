@@ -3,7 +3,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { MuiThemeProvider } from 'material-ui/styles'
 import registerServiceWorker from './registerServiceWorker'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
@@ -24,7 +24,7 @@ function fetchPosts() {
           author: post.data.author
         }
       })
-      
+
       resolve(posts)
     })
   })

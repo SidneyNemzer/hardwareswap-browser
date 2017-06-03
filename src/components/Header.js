@@ -1,34 +1,34 @@
 import React, { Component } from 'react'
-import muiThemeable from 'material-ui/styles/muiThemeable'
+import { withTheme } from 'material-ui/styles'
 import Statistic from './Statistic'
 
 class Header extends Component {
   render() {
-    const { muiTheme } = this.props
-    
+    const { theme } = this.props
+
     const headerStyle = {
-      backgroundColor: muiTheme.palette.primary1Color,
-      color: muiTheme.palette.alternateTextColor,
+      backgroundColor: theme.palette.background.appBar,
+      color: 'white',
       padding: 20
     }
-    
+
     const headingStyle = {
       textAlign: 'center'
     }
-    
+
     const infoBarStyle = {
       textAlign: 'center',
       display: 'flex',
       justifyContent: 'center'
     }
-    
+
     if (this.props.loading) {
       return (
         <header style={headerStyle}>
           <h1 style={headingStyle}>
-            <a 
-              href="https://reddit.com/r/hardwareswap" 
-              target="_blank" 
+            <a
+              href="https://reddit.com/r/hardwareswap"
+              target="_blank"
               title="Open /r/hardwareswap in a new tab"
               rel="noopener noreferrer"
             >
@@ -40,20 +40,20 @@ class Header extends Component {
             Loading...
           </div>
         </header>
-      )  
+      )
     }
-    
+
     return (
       <header style={headerStyle}>
         <h1 style={headingStyle}>
-          <a 
-            href="https://reddit.com/r/hardwareswap" 
-            target="_blank" 
+          <a
+            href="https://reddit.com/r/hardwareswap"
+            target="_blank"
             title="Open /r/hardwareswap in a new tab"
             rel="noopener noreferrer"
           >
             /r/hardwareswap
-          </a> 
+          </a>
           &nbsp;Browser
         </h1>
         <div style={infoBarStyle}>
@@ -79,4 +79,4 @@ class Header extends Component {
   }
 }
 
-export default muiThemeable()(Header)
+export default withTheme(Header)

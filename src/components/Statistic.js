@@ -1,21 +1,21 @@
 import React from 'react'
-import muiThemeable from 'material-ui/styles/muiThemeable'
+import { withTheme } from 'material-ui/styles'
 
 const Statistic = (props) => {
-  const { muiTheme } = props
-  
+  const { theme } = props
+
   const containerStyle = {
     margin: '0px 10px'
   }
-  
+
   const numberStyle = {
     fontSize: '1.4em'
   }
-  
+
   const labelStyle = {
-    color: muiTheme.palette.primary3Color
+    color: theme.palette.text.lightDivider
   }
-  
+
   return (
     <span style={containerStyle}>
       <div style={numberStyle}>
@@ -28,4 +28,4 @@ const Statistic = (props) => {
   )
 }
 
-export default muiThemeable()(Statistic)
+export default withTheme(Statistic)
