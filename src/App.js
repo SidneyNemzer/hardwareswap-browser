@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import Header from './components/Header'
 import Post from './components/Post'
 import CollapsedPosts from './components/CollapsedPosts'
-import muiThemeable from 'material-ui/styles/muiThemeable'
-import { Tabs, Tab } from 'material-ui/Tabs'
+import { withTheme } from 'material-ui/styles'
+import Tabs, { Tab } from 'material-ui/Tabs'
+import EmptyInfo from './components/EmptyInfo'
 
 class App extends Component {
   constructor() {
@@ -14,7 +15,8 @@ class App extends Component {
       savedPosts: {},
       loading: true,
       error: null,
-      filter: null
+      filter: null,
+      tab: 0
     }
     
     this.handlePostHidden = this.handlePostHidden.bind(this)
@@ -67,10 +69,8 @@ class App extends Component {
           <Header
             loading={true}
           />
-          <main className='top'>
-            <div className='loading'>
-              Fetching posts...
-            </div>
+          <main>
+            <EmptyInfo line1="Loading..." />
           </main>
         </div>
       )
@@ -144,9 +144,25 @@ class App extends Component {
         pushPostGroup()
       }
     })
-    
-    const pageStyle = {
-      backgroundColor: this.props.muiTheme.palette.canvasColor
+
+    // Build main content based on the selected tab
+    let mainContent
+    switch (this.state.tab) {
+      case 0:
+        mainContent = groupedElements
+        break
+      case 1:
+        mainContent = (
+          <EmptyInfo line1="You haven't saved any posts yet" />
+        )
+        break
+      case 2:
+        mainContent = (
+          <EmptyInfo line1="You haven't hidden any posts yet" />
+        )
+        break
+      default:
+        throw new Error('Unknown tab state')
     }
 
     return (
@@ -158,28 +174,24 @@ class App extends Component {
           savedPosts={Object.keys(savedPosts).length}
         />
         <Tabs
-          tabItemContainerStyle={{
-            width: 700
-          }}
           style={{
-            backgroundColor: this.props.muiTheme.palette.primary1Color
+            backgroundColor: this.props.theme.palette.primary.A700
           }}
+          textColor="white"
+          index={this.state.tab}
+          onChange={(event, index) => this.setState({tab: index})}
+          centered
         >
-          <Tab label="All">
-            <main style={pageStyle}>
-              {groupedElements}
-            </main>
-          </Tab>
-          <Tab label="Saved">
-            You haven't saved any posts yet!
-          </Tab>
-          <Tab label="Hidden">
-            You haven't hidden any posts yet!
-          </Tab>
+          <Tab label="All" />
+          <Tab label="Saved" />
+          <Tab label="Hidden" />
         </Tabs>
+        <main>
+          {mainContent}
+        </main>
       </div>
     )
   }
 }
 
-export default muiThemeable()(App)
+export default withTheme(App)
