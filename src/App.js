@@ -11,19 +11,19 @@ class App extends Component {
     super()
     this.state = {
       posts: [],
-      hidden: {},
+      hiddenPosts: {},
       savedPosts: {},
       loading: true,
       error: null,
       filter: null,
       tab: 0
     }
-    
+
     this.handlePostHidden = this.handlePostHidden.bind(this)
     this.handleHiddenReset = this.handleHiddenReset.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
   }
-  
+
   componentDidMount() {
     this.props.fetchPosts()
       .then(posts => {
@@ -33,36 +33,36 @@ class App extends Component {
         })
       })
   }
-  
+
   handlePostHidden(id, setHiddenTo) {
     this.setState(previousState => {
       if (setHiddenTo === true) {
-        previousState.hidden[id] = true  
+        previousState.hiddenPosts[id] = true
       } else {
-        delete previousState.hidden[id]
+        delete previousState.hiddenPosts[id]
       }
-      
-      
+
+
       return previousState
     })
   }
-  
+
   handleHiddenReset() {
     this.setState({
-      hidden: {}
+      hiddenPosts: {}
     })
   }
-  
+
   handleSearch(event) {
     const newValue = event.target.value
-    
+
     this.setState({
       filter: newValue !== '' ? newValue : null
     })
   }
-  
+
   render() {
-    
+
     if (this.state.loading) {
       return (
         <div>
@@ -75,14 +75,14 @@ class App extends Component {
         </div>
       )
     }
-    
-    const { posts, hidden, filter, savedPosts } = this.state
-    
+
+    const { posts, hiddenPosts, filter, savedPosts } = this.state
+
     // Simple matching function, for filtering
     function matchesSearch(text, search) {
       return text.toLowerCase().includes(search.toLowerCase())
     }
-    
+
     // Turn post objects into post elements
     let filteredOut = 0
     const postElements = posts.map(post => {
@@ -90,8 +90,8 @@ class App extends Component {
         visible: true,
         reason: null
       }
-      
-      if (hidden[post.id]) {
+
+      if (hiddenPosts[post.id]) {
         visibility.visible = false
         visibility.reason = 'manual'
       } else if (filter && !matchesSearch(post.title, filter)) {
@@ -99,7 +99,7 @@ class App extends Component {
         visibility.reason = 'filtered'
         filteredOut++
       }
-      
+
       return (
         <Post
           visibility={visibility}
@@ -109,15 +109,15 @@ class App extends Component {
         />
       )
     })
-    
+
     // Group hidden posts
     const groupedElements = []
     let currentPostGroup = []
-    
+
     function pushPostGroup() {
       if (currentPostGroup.length === 1) {
         groupedElements.push(currentPostGroup[0])
-        
+
         currentPostGroup = []
       } else if (currentPostGroup.length > 0) {
         groupedElements.push(
@@ -125,21 +125,21 @@ class App extends Component {
             {currentPostGroup}
           </CollapsedPosts>
         )
-        
+
         currentPostGroup = []
       }
     }
-    
+
     postElements.forEach((post, index) => {
       if (!post.props.visibility.visible) {
         currentPostGroup.push(post)
       } else {
         // This post is visible, end the group (if there is one)
         pushPostGroup()
-        
+
         groupedElements.push(post)
       }
-      
+
       if (index === postElements.length - 1) {
         pushPostGroup()
       }
@@ -169,7 +169,7 @@ class App extends Component {
       <div>
         <Header
           loadedPosts={posts.length}
-          hiddenPosts={Object.keys(hidden).length}
+          hiddenPosts={Object.keys(hiddenPosts).length}
           filteredPosts={filteredOut}
           savedPosts={Object.keys(savedPosts).length}
         />
