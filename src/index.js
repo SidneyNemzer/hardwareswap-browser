@@ -17,11 +17,15 @@ function fetchPosts() {
     .then(response => response.json())
     .then(data => {
       const posts = data.data.children.map(post => {
+        const { url, title, id, author, created_utc, link_flair_css_class } = post.data
+
         return {
-          url: post.data.url,
-          title: post.data.title.replace(/&amp;/g, '&'),
-          id: post.data.id,
-          author: post.data.author
+          url,
+          title: title.replace(/&amp;/g, '&'),
+          id,
+          author,
+          createdUtc: created_utc,
+          flair: link_flair_css_class
         }
       })
 
