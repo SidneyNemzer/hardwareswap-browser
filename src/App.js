@@ -175,7 +175,7 @@ class App extends Component {
         />
         <Tabs
           style={{
-            backgroundColor: this.props.theme.palette.primary.A700
+            backgroundColor: this.props.theme.palette.primary[500]
           }}
           textColor="white"
           index={this.state.tab}

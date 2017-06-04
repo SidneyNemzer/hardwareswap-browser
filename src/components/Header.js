@@ -7,7 +7,7 @@ class Header extends Component {
     const { theme } = this.props
 
     const headerStyle = {
-      backgroundColor: theme.palette.primary.A700,
+      backgroundColor: theme.palette.primary[500],
       color: 'white',
       padding: 20
     }
