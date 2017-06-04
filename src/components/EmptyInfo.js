@@ -7,6 +7,9 @@ const styleSheet = createStyleSheet('EmptyInfo', theme => ({
     margin: '50px auto',
     maxWidth: 700,
     textAlign: 'center'
+  },
+  unbold: {
+    fontWeight: 'normal'
   }
 }))
 
@@ -16,8 +19,8 @@ const EmptyInfo = (props) => {
 
   return (
     <div className={classes.emptyInfo}>
-      <h2>{line1}</h2>
-      {line2 ? <h3>{line2}</h3> : undefined}
+      <h2 className={classes.unbold}>{line1}</h2>
+      {line2 ? <h3 className={classes.unbold}>{line2}</h3> : undefined}
     </div>
   )
 }
