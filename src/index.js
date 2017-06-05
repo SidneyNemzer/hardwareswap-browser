@@ -11,6 +11,8 @@ import './index.css'
 
 injectTapEventPlugin()
 
+const postRegex = /\[([^-]+)-?([^\]]*)\]\s?\[H\]([^[\]]+)\[W\]\s?(.+)/
+
 function fetchPosts() {
   return new Promise((resolve, reject) => {
   fetch('https://www.reddit.com/r/hardwareswap/new.json?sort=new&limit=100')
@@ -19,9 +21,22 @@ function fetchPosts() {
       const posts = data.data.children.map(post => {
         const { url, title, id, author, created_utc, link_flair_css_class } = post.data
 
+        const parsed = {
+          success: false
+        }
+        const result = postRegex.exec(title)
+        if (result) {
+          parsed.success = true
+          parsed.country = result[1]
+          parsed.usaState = result[2]
+          parsed.have = result[3]
+          parsed.want = result[4]
+        }
+
         return {
           url,
           title: title.replace(/&amp;/g, '&'),
+          parsed,
           id,
           author,
           createdUtc: created_utc,

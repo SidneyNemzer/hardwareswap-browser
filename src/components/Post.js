@@ -1,44 +1,8 @@
 import React, { Component } from 'react'
 import PostHeader from './PostHeader'
 
-const postRegex = /\[([^-]+)-?([^\]]*)\]\s?\[H\]([^[\]]+)\[W\]\s?(.+)/
 
 class Post extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.parsedTitle = false
-    const result = postRegex.exec(this.props.title)
-    if (result) {
-      this.country = result[1]
-      this.usaState = result[2]
-      this.have = result[3]
-      this.want = result[4]
-      this.parsedTitle = true
-    }
-    
-    if (this.parsedTitle) {
-      this.state = {
-        currentView: 'HAVE',
-      }
-    } else {
-      this.state = {
-        currentView: 'FULL_TITLE',
-      }
-    }
-    
-    this.handleTitleViewChange = this.handleTitleViewChange.bind(this)
-  }
-  
-  handleTitleViewChange(newTitleView) {
-    if (!this.parsedTitle) {
-      newTitleView = 'FULL_TITLE'
-    }
-    this.setState({
-      currentView: newTitleView
-    })
-  }
-  
   render() {
     const { title, author, url, visibility } = this.props
     
