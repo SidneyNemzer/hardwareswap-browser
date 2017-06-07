@@ -4,12 +4,13 @@ import { withStyles, createStyleSheet } from 'material-ui/styles'
 const styleSheet = createStyleSheet('PostHeader', theme => ({
   failed: {
     color: 'gray',
-    fontStyle: 'italic'
-  }
+    fontStyle: 'italic',
+    textAlign: 'center'
+  },
   header: {
     display: 'flex',
-    justifyContent: 'space-around'
-  }
+    justifyContent: 'space-between'
+  },
   faded: {
     color: 'gray'
   }
@@ -17,11 +18,16 @@ const styleSheet = createStyleSheet('PostHeader', theme => ({
 
 const PostHeader = (props) => {
   if (!props.parsedTitle) {
-    <header>
-      <p className={props.classes.failed}>
-        Failed to parse title
-      </p>
-    </header>
+    return (
+      <header>
+        <p
+          className={props.classes.failed}
+          title="The title doesn't appear to be in the correct format: [state-country][H] have [W] want"
+        >
+          Failed to parse title
+        </p>
+      </header>
+    )
   }
 
   return (
@@ -31,13 +37,13 @@ const PostHeader = (props) => {
       </span>
       <span>
       {
-        props.parsed.usaState
+        props._state
         ?
-        props.parsed.usaState + ', '
+        props._state + ', '
         :
         null
       }
-      {props.parsed.country}
+      {props.country}
       </span>
       <span className={props.classes.faded}>
         Want
