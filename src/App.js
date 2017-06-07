@@ -186,7 +186,10 @@ class App extends Component {
           <Tab label="Saved" />
           <Tab label="Hidden" />
         </Tabs>
-        <main>
+        <main style={{
+          backgroundColor: this.props.theme.palette.grey[200],
+          padding: 1
+        }}>
           {mainContent}
         </main>
       </div>
