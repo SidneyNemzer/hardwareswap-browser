@@ -1,11 +1,29 @@
 import React, { Component } from 'react'
-import PostHeader from './PostHeader'
+import Paper from 'material-ui/Paper'
+import PostHEader from './PostHeader'
 
+const Post = (props) => {
+  return (
+    <Paper>
+      <PostHeader
+        parsedTitle={props.parsed.success}
+        state={props.usaState}
+        country={props.country}
+      />
+      <main>
+
+      </main>
+      <footer>
+
+      </footer>
+    </Paper>
+  )
+}
 
 class Post extends Component {
   render() {
     const { title, author, url, visibility } = this.props
-    
+
     if (!visibility.visible) {
       if (visibility.reason === 'manual') {
         return (
@@ -34,7 +52,7 @@ class Post extends Component {
         )
       }
     }
-    
+
     // Build location string
     let location = ''
     if (this.parsedTitle) {
@@ -43,22 +61,22 @@ class Post extends Component {
       }
       location += this.country
     }
-    
+
     // Render the selected title
     let curTitle
     switch (this.state.currentView) {
       case 'HAVE':
         curTitle = this.have
         break
-        
+
       case 'WANT':
         curTitle = this.want
         break
-        
+
       default:
         curTitle = title
     }
-    
+
     return (
       <section className="post">
         <PostHeader
@@ -69,15 +87,15 @@ class Post extends Component {
           onTitleViewChange={this.handleTitleViewChange}
           allowHaveWant={this.parsedTitle}
         />
-        
+
         <main>
           <h1>
             {curTitle}
           </h1>
         </main>
-        
+
         <footer>
-          <button 
+          <button
             className="hide"
             onClick={() => this.props.setPostHidden(true)}
           >
