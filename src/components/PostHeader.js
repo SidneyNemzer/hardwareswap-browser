@@ -9,10 +9,13 @@ const styleSheet = createStyleSheet('PostHeader', theme => ({
   },
   header: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginBottom: 5,
+    padding: '20px 20px 0'
   },
   faded: {
-    color: 'gray'
+    color: 'gray',
+    fontSize: 20
   }
 }))
 
