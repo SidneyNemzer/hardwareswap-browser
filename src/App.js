@@ -182,7 +182,7 @@ class App extends Component {
           onChange={(event, index) => this.setState({tab: index})}
           centered
         >
-          <Tab label="All" />
+          <Tab label="Recent" />
           <Tab label="Saved" />
           <Tab label="Hidden" />
         </Tabs>
