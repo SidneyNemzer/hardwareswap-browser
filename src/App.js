@@ -19,7 +19,7 @@ class App extends Component {
       tab: 0
     }
 
-    this.handlePostHidden = this.handlePostHidden.bind(this)
+    this.setPostHidden = this.setPostHidden.bind(this)
     this.handleHiddenReset = this.handleHiddenReset.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
   }
@@ -34,7 +34,13 @@ class App extends Component {
       })
   }
 
-  handlePostHidden(id, setHiddenTo) {
+  handleHiddenReset() {
+    this.setState({
+      hiddenPosts: {}
+    })
+  }
+
+  setPostHidden(id, setHiddenTo) {
     this.setState(previousState => {
       if (setHiddenTo === true) {
         previousState.hiddenPosts[id] = true
@@ -47,9 +53,15 @@ class App extends Component {
     })
   }
 
-  handleHiddenReset() {
-    this.setState({
-      hiddenPosts: {}
+  setPostSaved(id, setSavedTo, post) {
+    this.setState(previousState => {
+      if (setSavedTo) {
+        previousState.savedPosts[id] = post
+      } else {
+        delete previousState.savedPosts[id]
+      }
+
+      return previousState
     })
   }
 
@@ -104,7 +116,8 @@ class App extends Component {
         <Post
           visibility={visibility}
           key={post.id}
-          setPostHidden={setHiddenTo => this.handlePostHidden(post.id, setHiddenTo)}
+          setPostHidden={setHiddenTo => this.setPostHidden(post.id, setHiddenTo)}
+          setPostSaved={setSavedTo => this.setPostSaved(post.id, setSavedTo, post)}
           {...post}
         />
       )
