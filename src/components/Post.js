@@ -117,12 +117,20 @@ const Post = (props) => {
       <footer className={props.classes.footer}>
         <Button
           className={props.classes.button}
+          primary
+          compact
           onClick={() => window.open(props.url, '_blank')}
         >
           Open on Reddit
         </Button>
-        <Button className={props.classes.button}>Hide</Button>
-        <Button className={props.classes.button}>Save</Button>
+        <Button
+          compact
+          className={props.classes.button}
+          onClick={() => props.setPostHidden(true)}
+        >
+          Hide
+        </Button>
+        <Button compact className={props.classes.button}>Save</Button>
       </footer>
     </Paper>
   )
