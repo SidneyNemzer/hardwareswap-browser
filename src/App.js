@@ -21,6 +21,7 @@ class App extends Component {
 
     this.setPostHidden = this.setPostHidden.bind(this)
     this.handleHiddenReset = this.handleHiddenReset.bind(this)
+    this.setPostSaved = this.setPostSaved.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
   }
 
