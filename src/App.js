@@ -99,23 +99,15 @@ class App extends Component {
     // Turn post objects into post elements
     let filteredOut = 0
     const postElements = posts.map(post => {
-      let visibility = {
-        visible: true,
-        reason: null
-      }
-
       if (hiddenPosts[post.id]) {
-        visibility.visible = false
-        visibility.reason = 'manual'
+        return undefined
       } else if (filter && !matchesSearch(post.title, filter)) {
-        visibility.visible = false
-        visibility.reason = 'filtered'
         filteredOut++
+        return undefined
       }
 
       return (
         <Post
-          visibility={visibility}
           key={post.id}
           setPostHidden={setHiddenTo => this.setPostHidden(post.id, setHiddenTo)}
           setPostSaved={setSavedTo => this.setPostSaved(post.id, setSavedTo, post)}
@@ -124,46 +116,11 @@ class App extends Component {
       )
     })
 
-    // Group hidden posts
-    const groupedElements = []
-    let currentPostGroup = []
-
-    function pushPostGroup() {
-      if (currentPostGroup.length === 1) {
-        groupedElements.push(currentPostGroup[0])
-
-        currentPostGroup = []
-      } else if (currentPostGroup.length > 0) {
-        groupedElements.push(
-          <CollapsedPosts key={currentPostGroup.reduce((accumulator, post) => accumulator + post.id, '')}>
-            {currentPostGroup}
-          </CollapsedPosts>
-        )
-
-        currentPostGroup = []
-      }
-    }
-
-    postElements.forEach((post, index) => {
-      if (!post.props.visibility.visible) {
-        currentPostGroup.push(post)
-      } else {
-        // This post is visible, end the group (if there is one)
-        pushPostGroup()
-
-        groupedElements.push(post)
-      }
-
-      if (index === postElements.length - 1) {
-        pushPostGroup()
-      }
-    })
-
     // Build main content based on the selected tab
     let mainContent
     switch (this.state.tab) {
       case 0:
-        mainContent = groupedElements
+        mainContent = postElements
         break
       case 1:
         mainContent = (
