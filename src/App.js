@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Header from './components/Header'
 import Post from './components/Post'
-import CollapsedPosts from './components/CollapsedPosts'
 import { withTheme } from 'material-ui/styles'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import EmptyInfo from './components/EmptyInfo'
@@ -43,12 +42,11 @@ class App extends Component {
 
   setPostHidden(id, setHiddenTo) {
     this.setState(previousState => {
-      if (setHiddenTo === true) {
+      if (setHiddenTo) {
         previousState.hiddenPosts[id] = true
       } else {
         delete previousState.hiddenPosts[id]
       }
-
 
       return previousState
     })
