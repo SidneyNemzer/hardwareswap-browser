@@ -130,7 +130,13 @@ const Post = (props) => {
         >
           Hide
         </Button>
-        <Button compact className={props.classes.button}>Save</Button>
+        <Button
+          compact
+          className={props.classes.button}
+          onClick={() => props.setPostSaved(!props.isSaved)}
+        >
+          {props.isSaved ? "Unsave" : "Save"}
+        </Button>
       </footer>
     </Paper>
   )
