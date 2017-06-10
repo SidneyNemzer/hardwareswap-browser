@@ -109,17 +109,37 @@ class App extends Component {
     return filteredPosts
   }
 
-  renderPosts() {
-    const filteredPosts = this.preformSearch()
+  // Returns a new array of Posts, after removing hidden and filtered posts
+  applyFilter(posts) {
+    // Simple matching function, for filtering
+    function matchesSearch(text, search) {
+      return text.toLowerCase().includes(search.toLowerCase())
+    }
 
-    const { savedPosts } = this.state
+    const { hiddenPosts, filter } = this.state
 
-    return filteredPosts.map(post => (
+    const filteredPosts = posts.filter(post => {
+      if (hiddenPosts[post.id]) {
+        return false
+      } else if (filter && !matchesSearch(post.title, filter)) {
+        return false
+      }
+      return true
+    })
+
+    return filteredPosts
+  }
+
+  renderPosts(posts) {
+    const { savedPosts, hiddenPosts } = this.state
+
+    return posts.map(post => (
       <Post
         key={post.id}
         setPostHidden={setHiddenTo => this.setPostHidden(post.id, setHiddenTo)}
         setPostSaved={setSavedTo => this.setPostSaved(post.id, setSavedTo, post)}
-        isSaved={Object.keys(savedPosts).includes(post.id)}
+        isSaved={!!savedPosts[post.id]}
+        isHidden={!!hiddenPosts[post.id]}
         {...post}
       />
     ))
@@ -133,7 +153,7 @@ class App extends Component {
       case 0:
         return (
           <main style={{padding: 1}}>
-            {this.renderPosts()}
+            {this.renderPosts(this.applyFilter(this.state.posts))}
           </main>
         )
       case 1:
@@ -145,8 +165,8 @@ class App extends Component {
           )
         }
         return (
-          <main style={{padding: 1}} className={classes.centerContent}>
-            You've saved some posts (WIP)
+          <main style={{padding: 1}}>
+            {this.renderPosts(Object.keys(savedPosts).map(postId => savedPosts[postId]))}
           </main>
         )
       case 2:
