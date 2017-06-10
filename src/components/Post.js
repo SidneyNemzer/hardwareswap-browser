@@ -127,6 +127,7 @@ const Post = (props) => {
           compact
           className={props.classes.button}
           onClick={() => props.setPostHidden(true)}
+          disabled={props.isHidden}
         >
           Hide
         </Button>
