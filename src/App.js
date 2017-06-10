@@ -137,6 +137,7 @@ class App extends Component {
           )
         } else {
           mainContent = (
+            "This is a WIP"
           )
         }
         break
