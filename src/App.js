@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
 import Header from './components/Header'
 import Post from './components/Post'
-import { withTheme } from 'material-ui/styles'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import EmptyInfo from './components/EmptyInfo'
+import { withStyles, createStyleSheet } from 'material-ui/styles'
+
+const styleSheet = createStyleSheet('App', theme => ({
+  body: {
+    backgroundColor: theme.palette.grey[200]
+  },
+  tabs: {
+    backgroundColor: theme.palette.primary[500]
+  }
+}))
 
 class App extends Component {
   constructor() {
@@ -135,7 +144,7 @@ class App extends Component {
     }
 
     return (
-      <div>
+      <div className={this.props.classes.body}>
         <Header
           loadedPosts={posts.length}
           hiddenPosts={Object.keys(hiddenPosts).length}
@@ -143,9 +152,7 @@ class App extends Component {
           savedPosts={Object.keys(savedPosts).length}
         />
         <Tabs
-          style={{
-            backgroundColor: this.props.theme.palette.primary[500]
-          }}
+          className={this.props.classes.tabs}
           textColor="white"
           index={this.state.tab}
           onChange={(event, index) => this.setState({tab: index})}
@@ -155,10 +162,7 @@ class App extends Component {
           <Tab label="Saved" />
           <Tab label="Hidden" />
         </Tabs>
-        <main style={{
-          backgroundColor: this.props.theme.palette.grey[200],
-          padding: 1
-        }}>
+        <main style={{padding: 1}}>
           {mainContent}
         </main>
       </div>
@@ -166,4 +170,4 @@ class App extends Component {
   }
 }
 
-export default withTheme(App)
+export default withStyles(styleSheet)(App)
