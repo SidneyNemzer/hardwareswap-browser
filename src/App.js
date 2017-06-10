@@ -12,6 +12,9 @@ const styleSheet = createStyleSheet('App', theme => ({
   },
   tabs: {
     backgroundColor: theme.palette.primary[500]
+  },
+  centerContent: {
+    textAlign: 'center'
   }
 }))
 
@@ -25,13 +28,14 @@ class App extends Component {
       loading: true,
       error: null,
       filter: null,
+      searchTimer: null,
       tab: 0
     }
 
     this.setPostHidden = this.setPostHidden.bind(this)
     this.handleHiddenReset = this.handleHiddenReset.bind(this)
     this.setPostSaved = this.setPostSaved.bind(this)
-    this.handleSearch = this.handleSearch.bind(this)
+    this.handleSearchInput = this.handleSearchInput.bind(this)
   }
 
   componentDidMount() {
@@ -41,6 +45,7 @@ class App extends Component {
           posts: posts,
           loading: false
         })
+        this.preformSearch()
       })
   }
 
@@ -57,7 +62,6 @@ class App extends Component {
       } else {
         delete previousState.hiddenPosts[id]
       }
-
       return previousState
     })
   }
@@ -74,12 +78,104 @@ class App extends Component {
     })
   }
 
-  handleSearch(event) {
+  handleSearchInput(event) {
+    clearTimeout(this.state.searchTimer)
+
     const newValue = event.target.value
 
     this.setState({
-      filter: newValue !== '' ? newValue : null
+      filter: newValue !== '' ? newValue : null,
+      searchTimer: setTimeout(this.preformSearch, 2000)
     })
+  }
+
+  preformSearch() {
+    // Simple matching function, for filtering
+    function matchesSearch(text, search) {
+      return text.toLowerCase().includes(search.toLowerCase())
+    }
+
+    const { posts, hiddenPosts, filter } = this.state
+
+    const filteredPosts = posts.filter(post => {
+      if (hiddenPosts[post.id]) {
+        return false
+      } else if (filter && !matchesSearch(post.title, filter)) {
+        return false
+      }
+      return true
+    })
+
+    return filteredPosts
+  }
+
+  renderPosts() {
+    const filteredPosts = this.preformSearch()
+
+    const { savedPosts } = this.state
+
+    return filteredPosts.map(post => (
+      <Post
+        key={post.id}
+        setPostHidden={setHiddenTo => this.setPostHidden(post.id, setHiddenTo)}
+        setPostSaved={setSavedTo => this.setPostSaved(post.id, setSavedTo, post)}
+        isSaved={Object.keys(savedPosts).includes(post.id)}
+        {...post}
+      />
+    ))
+  }
+
+  renderMain() {
+    const { classes } = this.props
+    const { savedPosts, hiddenPosts } = this.state
+
+    switch (this.state.tab) {
+      case 0:
+        return (
+          <main style={{padding: 1}}>
+            {this.renderPosts()}
+          </main>
+        )
+      case 1:
+        if (Object.keys(savedPosts).length === 0) {
+          return (
+            <main style={{padding: 1}} className={classes.centerContent}>
+              <EmptyInfo line1="You haven't saved any posts yet" />
+            </main>
+          )
+        }
+        return (
+          <main style={{padding: 1}} className={classes.centerContent}>
+            You've saved some posts (WIP)
+          </main>
+        )
+      case 2:
+        const numHiddenPosts = Object.keys(hiddenPosts).length
+        if (numHiddenPosts === 0) {
+          return (
+            <main style={{padding: 1}} className={classes.centerContent}>
+              <EmptyInfo line1="You haven't hidden any posts yet" />
+            </main>
+          )
+        }
+        const line1 = "You've hidden " + numHiddenPosts + " post" + (numHiddenPosts === 1 ? '' : 's')
+        return (
+          <main style={{padding: 1}} className={classes.centerContent}>
+            <EmptyInfo
+              line1={line1}
+            />
+            <Button
+              raised
+              primary
+              onClick={this.handleHiddenReset}
+            >
+              Reset
+            </Button>
+          </main>
+        )
+      default:
+        throw new Error('Unknown tab state')
+    }
   }
 
   render() {
@@ -97,88 +193,18 @@ class App extends Component {
       )
     }
 
-    const { posts, hiddenPosts, filter, savedPosts } = this.state
-
-    // Simple matching function, for filtering
-    function matchesSearch(text, search) {
-      return text.toLowerCase().includes(search.toLowerCase())
-    }
-
-    // Turn post objects into post elements
-    let filteredOut = 0
-    const postElements = posts.map(post => {
-      if (hiddenPosts[post.id]) {
-        return undefined
-      } else if (filter && !matchesSearch(post.title, filter)) {
-        filteredOut++
-        return undefined
-      }
-
-      return (
-        <Post
-          key={post.id}
-          setPostHidden={setHiddenTo => this.setPostHidden(post.id, setHiddenTo)}
-          setPostSaved={setSavedTo => this.setPostSaved(post.id, setSavedTo, post)}
-          {...post}
-        />
-      )
-    })
-
-    // Build main content based on the selected tab
-    let mainContent
-    switch (this.state.tab) {
-      case 0:
-        mainContent = postElements
-        break
-      case 1:
-        if (Object.keys(savedPosts).length === 0) {
-          mainContent = (
-            <EmptyInfo line1="You haven't saved any posts yet" />
-          )
-        } else {
-          mainContent = (
-            "This is a WIP"
-          )
-        }
-        break
-      case 2:
-        const numHiddenPosts = Object.keys(hiddenPosts).length
-        if (numHiddenPosts === 0) {
-          mainContent = (
-            <EmptyInfo line1="You haven't hidden any posts yet" />
-          )
-        } else {
-          const line1 = "You've hidden " + numHiddenPosts + " post" + (numHiddenPosts === 1 ? '' : 's')
-          mainContent = (
-            <div>
-              <EmptyInfo
-                line1={line1}
-              />
-              <Button
-                raised
-                primary
-                onClick={this.handleHiddenReset}
-              >
-                Reset
-              </Button>
-            </div>
-          )
-        }
-        break
-      default:
-        throw new Error('Unknown tab state')
-    }
+    const { posts, hiddenPosts, savedPosts } = this.state
+    const { classes } = this.props
 
     return (
-      <div className={this.props.classes.body}>
+      <div className={classes.body}>
         <Header
           loadedPosts={posts.length}
           hiddenPosts={Object.keys(hiddenPosts).length}
-          filteredPosts={filteredOut}
           savedPosts={Object.keys(savedPosts).length}
         />
         <Tabs
-          className={this.props.classes.tabs}
+          className={classes.tabs}
           textColor="white"
           index={this.state.tab}
           onChange={(event, index) => this.setState({tab: index})}
@@ -188,9 +214,7 @@ class App extends Component {
           <Tab label="Saved" />
           <Tab label="Hidden" />
         </Tabs>
-        <main style={{padding: 1}}>
-          {mainContent}
-        </main>
+        {this.renderMain()}
       </div>
     )
   }
