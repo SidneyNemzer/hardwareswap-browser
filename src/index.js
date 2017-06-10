@@ -20,11 +20,12 @@ function fetchPosts() {
     .then(data => {
       const posts = data.data.children.map(post => {
         const { url, title, id, author, created_utc, link_flair_css_class } = post.data
+        const decodedTitle = title.replace(/&amp;/g, '&')
 
         const parsed = {
           success: false
         }
-        const result = postRegex.exec(title)
+        const result = postRegex.exec(decodedTitle)
         if (result) {
           parsed.success = true
           parsed.country = result[1]
@@ -35,7 +36,7 @@ function fetchPosts() {
 
         return {
           url,
-          title: title.replace(/&amp;/g, '&'),
+          title: decodedTitle,
           parsed,
           id,
           author,
