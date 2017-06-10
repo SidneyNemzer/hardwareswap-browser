@@ -69,10 +69,6 @@ class Header extends Component {
             number={this.props.savedPosts}
             label="Saved Posts"
           />
-          <Statistic
-            number={this.props.filteredPosts}
-            label="Filtered Posts"
-          />
         </div>
       </header>
     )
