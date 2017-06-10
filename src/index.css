@@ -2,6 +2,7 @@
 body {
   margin: 0;
   font-family: Roboto, sans-serif;
+  background-color: #eeeeee;
   /* Prevent scroll bar from changing the page width when switching to a view
      that isn't long enough to scroll */
   overflow-y: scroll;
