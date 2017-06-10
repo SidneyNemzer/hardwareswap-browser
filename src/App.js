@@ -4,6 +4,7 @@ import Post from './components/Post'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import EmptyInfo from './components/EmptyInfo'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
+import Button from 'material-ui/Button'
 
 const styleSheet = createStyleSheet('App', theme => ({
   body: {
@@ -130,14 +131,38 @@ class App extends Component {
         mainContent = postElements
         break
       case 1:
-        mainContent = (
-          <EmptyInfo line1="You haven't saved any posts yet" />
-        )
+        if (Object.keys(savedPosts).length === 0) {
+          mainContent = (
+            <EmptyInfo line1="You haven't saved any posts yet" />
+          )
+        } else {
+          mainContent = (
+          )
+        }
         break
       case 2:
-        mainContent = (
-          <EmptyInfo line1="You haven't hidden any posts yet" />
-        )
+        const numHiddenPosts = Object.keys(hiddenPosts).length
+        if (numHiddenPosts === 0) {
+          mainContent = (
+            <EmptyInfo line1="You haven't hidden any posts yet" />
+          )
+        } else {
+          const line1 = "You've hidden " + numHiddenPosts + " post" + (numHiddenPosts === 1 ? '' : 's')
+          mainContent = (
+            <div>
+              <EmptyInfo
+                line1={line1}
+              />
+              <Button
+                raised
+                primary
+                onClick={this.handleHiddenReset}
+              >
+                Reset
+              </Button>
+            </div>
+          )
+        }
         break
       default:
         throw new Error('Unknown tab state')
