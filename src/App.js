@@ -5,6 +5,7 @@ import Tabs, { Tab } from 'material-ui/Tabs'
 import EmptyInfo from './components/EmptyInfo'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
 import Button from 'material-ui/Button'
+import TextField from 'material-ui/TextField'
 
 const styleSheet = createStyleSheet('App', theme => ({
   tabs: {
@@ -12,6 +13,10 @@ const styleSheet = createStyleSheet('App', theme => ({
   },
   centerContent: {
     textAlign: 'center'
+  },
+  search: {
+    maxWidth: 500,
+    margin: 'auto'
   }
 }))
 
@@ -24,9 +29,21 @@ class App extends Component {
       savedPosts: {},
       loading: true,
       error: null,
+      searchInput: '',
       filter: null,
-      searchTimer: null,
       tab: 0
+    }
+
+    this.searchTimer = null
+    this.updateFilter = () => {
+      clearTimeout(this.searchTimer)
+      this.searchTimer = setTimeout(() => {
+        this.setState(previousState => {
+          previousState.filter = previousState.searchInput
+
+          return previousState
+        })
+      }, 1000)
     }
 
     this.setPostHidden = this.setPostHidden.bind(this)
@@ -42,7 +59,6 @@ class App extends Component {
           posts: posts,
           loading: false
         })
-        this.preformSearch()
       })
   }
 
@@ -76,34 +92,11 @@ class App extends Component {
   }
 
   handleSearchInput(event) {
-    clearTimeout(this.state.searchTimer)
-
-    const newValue = event.target.value
-
     this.setState({
-      filter: newValue !== '' ? newValue : null,
-      searchTimer: setTimeout(this.preformSearch, 2000)
-    })
-  }
-
-  preformSearch() {
-    // Simple matching function, for filtering
-    function matchesSearch(text, search) {
-      return text.toLowerCase().includes(search.toLowerCase())
-    }
-
-    const { posts, hiddenPosts, filter } = this.state
-
-    const filteredPosts = posts.filter(post => {
-      if (hiddenPosts[post.id]) {
-        return false
-      } else if (filter && !matchesSearch(post.title, filter)) {
-        return false
-      }
-      return true
+      searchInput: event.target.value
     })
 
-    return filteredPosts
+    this.updateFilter()
   }
 
   // Returns a new array of Posts, after removing hidden and filtered posts
@@ -148,9 +141,19 @@ class App extends Component {
 
     switch (this.state.tab) {
       case 0:
+        const posts = this.renderPosts(this.applyFilter(this.state.posts))
+
         return (
           <main style={{padding: 1}}>
-            {this.renderPosts(this.applyFilter(this.state.posts))}
+            <TextField
+              label="Search"
+              type="text"
+              helperText={this.state.filter ? posts.length + ' result' + (posts.length === 1 ? '' : 's') : undefined}
+              onInput={this.handleSearchInput}
+              value={this.state.searchInput}
+              className={classes.search}
+            />
+            {posts}
           </main>
         )
       case 1:
@@ -208,6 +211,7 @@ class App extends Component {
           />
           <Tabs
             className={classes.tabs}
+            onChange={() => {}}
             textColor="white"
             index={this.state.tab}
             centered
