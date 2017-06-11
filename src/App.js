@@ -196,13 +196,27 @@ class App extends Component {
   }
 
   render() {
+    const { classes } = this.props
 
     if (this.state.loading) {
       return (
         <div>
           <Header
-            loading={true}
+            loadedPosts={0}
+            hiddenPosts={0}
+            savedPosts={0}
           />
+          <Tabs
+            className={classes.tabs}
+            textColor="white"
+            index={this.state.tab}
+            centered
+            disabled
+          >
+            <Tab label="Recent" />
+            <Tab label="Saved" />
+            <Tab label="Hidden" />
+          </Tabs>
           <main>
             <EmptyInfo line1="Loading..." />
           </main>
@@ -211,7 +225,6 @@ class App extends Component {
     }
 
     const { posts, hiddenPosts, savedPosts } = this.state
-    const { classes } = this.props
 
     return (
       <div>
