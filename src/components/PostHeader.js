@@ -9,9 +9,14 @@ const styleSheet = createStyleSheet('PostHeader', theme => ({
   },
   header: {
     display: 'flex',
-    justifyContent: 'space-between',
     marginBottom: 5,
     padding: '20px 20px 0'
+  },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
+  center: {
+    justifyContent: 'center'
   },
   faded: {
     color: 'gray',
@@ -22,19 +27,29 @@ const styleSheet = createStyleSheet('PostHeader', theme => ({
 const PostHeader = (props) => {
   if (!props.parsedTitle) {
     return (
-      <header>
-        <p
+      <header
+        className={
+          props.classes.header + ' ' +
+          props.classes.center
+        }
+      >
+        <span
           className={props.classes.failed}
           title="The title doesn't appear to be in the correct format: [state-country][H] have [W] want"
         >
           Failed to parse title
-        </p>
+        </span>
       </header>
     )
   }
 
   return (
-    <header className={props.classes.header}>
+    <header
+      className={
+        props.classes.header + ' ' +
+        props.classes.spaceBetween
+      }
+    >
       <span className={props.classes.faded}>
         Have
       </span>
