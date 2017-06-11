@@ -43,12 +43,16 @@ const styleSheet = createStyleSheet('Post', theme => ({
     marginBottom: 15,
 
     '& span': {
-      fontSize: 30,
+      fontSize: 25,
       maxWidth: '46%'
     }
   },
+  large: {
+    fontSize: 25
+  },
   failed: {
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: 15,
   },
   main: {
     padding: '0 20px',
@@ -87,7 +91,12 @@ const Post = (props) => {
     )
   } else {
     title = (
-      <div className={props.classes.failed}>
+      <div
+        className={
+          props.classes.failed + ' ' +
+          props.classes.large
+        }
+      >
         {props.title}
       </div>
     )
