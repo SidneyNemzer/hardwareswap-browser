@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { withTheme } from 'material-ui/styles'
+import React from 'react'
 import Statistic from './Statistic'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
 
