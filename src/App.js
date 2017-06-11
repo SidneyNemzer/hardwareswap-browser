@@ -7,9 +7,6 @@ import { withStyles, createStyleSheet } from 'material-ui/styles'
 import Button from 'material-ui/Button'
 
 const styleSheet = createStyleSheet('App', theme => ({
-  body: {
-    backgroundColor: theme.palette.grey[200]
-  },
   tabs: {
     backgroundColor: theme.palette.primary[500]
   },
@@ -217,7 +214,7 @@ class App extends Component {
     const { classes } = this.props
 
     return (
-      <div className={classes.body}>
+      <div>
         <Header
           loadedPosts={posts.length}
           hiddenPosts={Object.keys(hiddenPosts).length}
