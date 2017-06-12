@@ -13,6 +13,14 @@ const styleSheet = createStyleSheet('Header', theme => ({
     textAlign: 'center',
     display: 'flex',
     justifyContent: 'center'
+  },
+  link: {
+    color: theme.palette.accent['A400'],
+  },
+  what: {
+    position: 'absolute',
+    right: 10,
+    top: 10
   }
 }))
 
@@ -20,6 +28,7 @@ const Header = (props) => (
   <header className={props.classes.header}>
     <h1>
       <a
+        className={props.classes.link}
         href="https://reddit.com/r/hardwareswap"
         target="_blank"
         title="Open /r/hardwareswap in a new tab"
@@ -42,6 +51,17 @@ const Header = (props) => (
         number={props.hiddenPosts}
         label="Hidden Posts"
       />
+      <a
+        className={
+          props.classes.link + ' ' +
+          props.classes.what
+        }
+        href="https://github.com/SidneyNemzer/hardwareswap-browser#readme"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        What's this?
+      </a>
     </div>
   </header>
 )
