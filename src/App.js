@@ -9,7 +9,8 @@ import TextField from 'material-ui/TextField'
 
 const styleSheet = createStyleSheet('App', theme => ({
   tabs: {
-    backgroundColor: theme.palette.primary[500]
+    backgroundColor: theme.palette.primary[500],
+    boxShadow: theme.shadows[3]
   },
   centerContent: {
     textAlign: 'center'
