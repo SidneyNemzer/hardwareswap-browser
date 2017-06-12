@@ -70,12 +70,12 @@ class App extends Component {
     let savedPosts = {}
 
     try {
-      hiddenPosts = JSON.parse(localStorage.getItem('hiddenPosts'))
+      hiddenPosts = JSON.parse(localStorage.getItem('hiddenPosts')) || {}
     } catch (e) {
 
     }
     try {
-      savedPosts = JSON.parse(localStorage.getItem('savedPosts'))
+      savedPosts = JSON.parse(localStorage.getItem('savedPosts')) || {}
     } catch (e) {
 
     }
