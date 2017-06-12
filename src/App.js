@@ -24,6 +24,7 @@ const styleSheet = createStyleSheet('App', theme => ({
 class App extends Component {
   constructor() {
     super()
+
     this.state = {
       posts: [],
       hiddenPosts: {},
@@ -54,6 +55,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.loadStorageData()
     this.props.fetchPosts()
       .then(posts => {
         this.setState({
@@ -61,6 +63,36 @@ class App extends Component {
           loading: false
         })
       })
+  }
+
+  loadStorageData() {
+    let hiddenPosts = {}
+    let savedPosts = {}
+
+    try {
+      hiddenPosts = JSON.parse(localStorage.getItem('hiddenPosts'))
+    } catch (e) {
+
+    }
+    try {
+      savedPosts = JSON.parse(localStorage.getItem('savedPosts'))
+    } catch (e) {
+
+    }
+
+    this.setState({
+      hiddenPosts,
+      savedPosts
+    })
+  }
+
+  saveState(state) {
+    localStorage.setItem('savedPosts', JSON.stringify(state.savedPosts))
+    localStorage.setItem('hiddenPosts', JSON.stringify(state.hiddenPosts))
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    this.saveState(nextState)
   }
 
   handleHiddenReset() {
