@@ -1,132 +1,73 @@
 import React from 'react'
+import { withStyles, createStyleSheet } from 'material-ui/styles'
 
-export default function PostHeader(props) {
-  const buttonAttributes = {
-    have: {
-      onClick: () => props.onTitleViewChange('HAVE')
-    },
-    want: {
-      onClick: () => props.onTitleViewChange('WANT')
-    },
-    fullTitle: {
-      onClick: () => props.onTitleViewChange('FULL_TITLE')
-    }
+const styleSheet = createStyleSheet('PostHeader', theme => ({
+  failed: {
+    color: 'gray',
+    fontStyle: 'italic',
+    textAlign: 'center'
+  },
+  header: {
+    display: 'flex',
+    marginBottom: 5,
+    padding: '20px 20px 0'
+  },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
+  center: {
+    justifyContent: 'center'
+  },
+  faded: {
+    color: 'gray',
+    fontSize: 20
   }
-  
-  switch (props.titleView) {
-    case 'HAVE':
-      buttonAttributes.have.className = 'selected'
-      break
-      
-    case 'WANT':
-      buttonAttributes.want.className = 'selected'
-      break
-      
-    default:
-      buttonAttributes.fullTitle.className = 'selected'
-  }
-  
-  if (!props.allowHaveWant) {
+}))
+
+const PostHeader = (props) => {
+  if (!props.parsedTitle) {
     return (
-      <header>
-        <div className="info">
-          <span className="username">
-            <a 
-              href={'https://reddit.com/u/' + props.author}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {'/u/' + props.author}
-            </a>
-          </span>
-  
-          <span 
-            className="location center"
-            style={{
-              fontStyle: 'italic',
-              cursor: 'help'
-            }}
-            title="The title doesn't appear to be in the format [Location] [H] Item [W] Item"
-          >
-            Couldn't parse title
-          </span>
-  
-          <span className="open-reddit right">
-            <a 
-              href={props.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open this post on reddit in a new tab"
-            >
-              Open in reddit 
-              <img 
-                className="external-link"
-                src="https://maxcdn.icons8.com/Share/icon/Very_Basic//external_link1600.png"
-                alt="external link"
-              />
-            </a>
-          </span>
-        </div>
+      <header
+        className={
+          props.classes.header + ' ' +
+          props.classes.center
+        }
+      >
+        <span
+          className={props.classes.failed}
+          title="The title doesn't appear to be in the correct format: [state-country][H] have [W] want"
+        >
+          Failed to parse title
+        </span>
       </header>
     )
   }
-  
+
   return (
-    <header>
-      <div className="info">
-        <span className="username">
-          <a 
-            href={'https://reddit.com/u/' + props.author}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {'/u/' + props.author}
-          </a>
-        </span>
-
-        <span 
-          className="location center"
-          style={props.location === 'Unknown' ? {fontStyle: 'italic'} : {}}
-        >
-          {props.location}
-        </span>
-
-        <span className="open-reddit right">
-          <a 
-            href={props.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Open this post on reddit in a new tab"
-          >
-            Open in reddit 
-            <img 
-              className="external-link"
-              src="https://maxcdn.icons8.com/Share/icon/Very_Basic//external_link1600.png"
-              alt="external link"
-            />
-          </a>
-        </span>
-      </div>
-      
-      <div className="view-options">
-        <button 
-          {...buttonAttributes.fullTitle}
-        >
-          Full Title
-        </button>
-        
-        <button 
-          {...buttonAttributes.have}
-        >
-          Have
-        </button>
-        
-        <button 
-          {...buttonAttributes.want}
-        >
-          Want
-        </button>
-      </div>
+    <header
+      className={
+        props.classes.header + ' ' +
+        props.classes.spaceBetween
+      }
+    >
+      <span className={props.classes.faded}>
+        Have
+      </span>
+      <span>
+      {
+        props._state
+        ?
+        props._state + ', '
+        :
+        null
+      }
+      {props.country}
+      </span>
+      <span className={props.classes.faded}>
+        Want
+      </span>
     </header>
   )
 }
+
+export default withStyles(styleSheet)(PostHeader)

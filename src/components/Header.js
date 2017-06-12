@@ -1,84 +1,69 @@
-import React, { Component } from 'react'
+import React from 'react'
+import Statistic from './Statistic'
+import { withStyles, createStyleSheet } from 'material-ui/styles'
 
-class Header extends Component {
-  render() {
-    if (this.props.loading) {
-      return (
-        <header className='top'>
-          <h1>
-            <a 
-              href="https://reddit.com/r/hardwareswap" 
-              target="_blank" 
-              title="Open /r/hardwareswap in a new tab"
-              rel="noopener noreferrer"
-            >
-              /r/hardwareswap&nbsp;
-            </a>
-            Browser
-          </h1>
-          <div className="info">
-            Loading...
-          </div>
-          <input
-            className="search"
-            placeholder="search..."
-            disabled
-          />
-        </header>
-      )  
-    }
-    
-    return (
-      <header className='top'>
-        <h1>
-          <a 
-            href="https://reddit.com/r/hardwareswap" 
-            target="_blank" 
-            title="Open /r/hardwareswap in a new tab"
-            rel="noopener noreferrer"
-          >
-            /r/hardwareswap&nbsp;
-          </a> 
-          Browser
-        </h1>
-        <div className="info">
-          <span className="loaded-posts">
-            Loaded Posts: {this.props.loadedPosts}
-          </span>
-          <span className="hidden-posts">
-            Hidden Posts:&nbsp;
-            <span className="data">
-              {this.props.hiddenPosts.manual + this.props.hiddenPosts.filtered}
-            </span>
-            &nbsp;
-            <span className="details">
-              (
-              <span 
-                className="data"
-                style={{
-                  cursor: 'pointer'
-                }}
-                title="Click to reset hidden posts"
-                onClick={this.props.handleHiddenReset}
-              >
-                {this.props.hiddenPosts.manual} manual
-              </span>
-              ,&nbsp;
-              <span className="data">
-                {this.props.hiddenPosts.filtered} filtered
-              </span>
-              )
-            </span>
-          </span>
-        </div>
-        <input
-          className="search"
-          placeholder="search..."
-          onInput={this.props.handleSearch}
-        />
-      </header>
-    )
+const styleSheet = createStyleSheet('Header', theme => ({
+  header: {
+    backgroundColor: theme.palette.primary[500],
+    color: 'white',
+    padding: 20,
+    textAlign: 'center'
+  },
+  statsBar: {
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  link: {
+    color: theme.palette.accent['A400'],
+  },
+  what: {
+    position: 'absolute',
+    right: 10,
+    top: 10
   }
-}
+}))
 
-export default Header
+const Header = (props) => (
+  <header className={props.classes.header}>
+    <h1>
+      <a
+        className={props.classes.link}
+        href="https://reddit.com/r/hardwareswap"
+        target="_blank"
+        title="Open /r/hardwareswap in a new tab"
+        rel="noopener noreferrer"
+      >
+        /r/hardwareswap
+      </a>
+      &nbsp;Browser
+    </h1>
+    <div className={props.classes.statsBar}>
+      <Statistic
+        number={props.loadedPosts}
+        label="Loaded Posts"
+      />
+      <Statistic
+        number={props.savedPosts}
+        label="Saved Posts"
+      />
+      <Statistic
+        number={props.hiddenPosts}
+        label="Hidden Posts"
+      />
+      <a
+        className={
+          props.classes.link + ' ' +
+          props.classes.what
+        }
+        href="https://github.com/SidneyNemzer/hardwareswap-browser#readme"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        What's this?
+      </a>
+    </div>
+  </header>
+)
+
+export default withStyles(styleSheet)(Header)
