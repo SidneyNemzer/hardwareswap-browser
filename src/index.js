@@ -6,6 +6,9 @@ import App from './App'
 import { MuiThemeProvider } from 'material-ui/styles'
 import registerServiceWorker from './registerServiceWorker'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+import { createMuiTheme } from 'material-ui/styles'
+import { blue, teal } from 'material-ui/styles/colors'
+import createPalette from 'material-ui/styles/palette'
 
 import './index.css'
 
@@ -50,8 +53,15 @@ function fetchPosts() {
   })
 }
 
+const theme = createMuiTheme({
+  palette: createPalette({
+    primary: blue,
+    accent: teal
+  })
+})
+
 ReactDOM.render(
-  <MuiThemeProvider>
+  <MuiThemeProvider theme={theme}>
     <App
       fetchPosts={fetchPosts}
     />
